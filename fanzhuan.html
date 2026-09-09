@@ -8,29 +8,25 @@
 <p><a href="day8.html">← 看这题的代码</a></p>
 <h1>数字反转</h1>
 <p>输入一个三位数，点反转：</p>
- 
+
 <input type="number" id="num" placeholder="比如 123">
 <button onclick="fanzhuan()">反转</button>
 <p id="out"></p>
- 
+
 <script>
 function fanzhuan() {
-  // 拿到输入框里的值，转成数字（JS里输入框给的是文字，要转）
   let a = Number(document.getElementById("num").value);
   let out = document.getElementById("out");
- 
-  // 兜底：不是三位数就不给玩
+
   if (a < 100 || a > 999) {
     out.innerText = "请输入三位数（100~999）";
     return;
   }
- 
-  // 拆位逻辑：和你的C代码一模一样
-  // 唯一区别：JS的 / 不扔小数（123/10=12.3），要用 Math.floor 补刀
+
   let ge = a % 10;
   let shi = Math.floor(a / 10) % 10;
   let bai = Math.floor(a / 100);
- 
+
   let result = ge * 100 + shi * 10 + bai;
   out.innerText = "反转后是：" + result;
 }
