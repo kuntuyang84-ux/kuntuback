@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Day 8 · 交互式作品集</title>
+</head>
+<body>
+<p><a href="https://sfile.chatglm.cn/workspace/file/3b/3bc38d5ea2.html">← 回作品集</a></p>
+<h1>Day 8 · 数字反转</h1>
+<p>日期：2026-09-09 · C语言</p>
+ 
+<h2>代码</h2>
+<pre>
+#include &lt;stdio.h&gt;
+ 
+int main()
+{
+    int a,ge,shi,bai,result; 
+    
+    printf("输入一个三位数：");
+    scanf("%d",&a);
+    
+    ge=a%10;
+    shi=(a/10)%10;
+    bai=a/100;
+    
+    result=ge*100+shi*10+bai;
+    printf("反转后是：%d",result);
+    return 0;
+    
+}
+</pre>
+ 
+<p><a href="https://sfile.chatglm.cn/workspace/file/91/91082307bf.html">▶ 在线玩这一题</a></p>
+</body>
+</html>
