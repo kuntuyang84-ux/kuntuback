@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>餐训账本 · 自立期</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    background:linear-gradient(165deg,#0b1020 0%,#141a2e 45%,#0d1226 100%);
+    color:#e8ecf4; min-height:100vh; padding:20px 14px 40px;
+    display:flex; justify-content:center;
+  }
+  .wrap { width:100%; max-width:460px; }
+  .glass {
+    background:rgba(255,255,255,0.055);
+    border:1px solid rgba(255,255,255,0.11);
+    border-radius:22px; padding:18px 16px;
+    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    margin-bottom:14px;
+  }
+  .glow-gold { border-color:rgba(245,197,66,0.35); box-shadow:0 0 26px rgba(245,197,66,0.09); }
+  .era { font-size:11px; letter-spacing:3px; color:#8b93a7; text-align:center; }
+  h1 { font-size:26px; font-weight:700; text-align:center; margin:6px 0 4px; }
+  .upd { font-size:11px; color:#8b93a7; text-align:center; margin-bottom:16px; }
+  .sec-t { font-size:12px; letter-spacing:2px; color:#8b93a7; margin:18px 4px 8px; }
+  .stats { display:flex; gap:8px; margin-bottom:14px; }
+  .stat {
+    flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09);
+    border-radius:16px; padding:10px 6px; text-align:center;
+  }
+  .stat .v { font-size:15px; font-weight:700; }
+  .stat .k { font-size:10px; color:#8b93a7; margin-top:2px; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px; }
+  .tag-gold { background:rgba(245,197,66,0.14); color:#f5c542; border:1px solid rgba(245,197,66,0.3); }
+  .tag-teal { background:rgba(74,222,128,0.12); color:#4ade80; border:1px solid rgba(74,222,128,0.28); }
+  .desc { font-size:13px; color:#c7cede; line-height:1.6; margin-top:6px; }
+  .rule { font-size:12px; color:#8b93a7; line-height:1.7; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.1); }
+  .rule b { color:#c7cede; }
+  .track { position:relative; height:8px; border-radius:99px; background:rgba(255,255,255,0.08); margin:26px 8px 34px; }
+  .fill { position:absolute; left:0; top:0; bottom:0; width:10.7%; border-radius:99px;
+          background:linear-gradient(90deg,#f5c542,#f59e0b); }
+  .node { position:absolute; top:50%; transform:translate(-50%,-50%); width:14px; height:14px; border-radius:50%;
+          background:#232a3d; border:2px solid rgba(255,255,255,0.25); }
+  .node.hit { background:#f5c542; border-color:#f5c542; box-shadow:0 0 10px rgba(245,197,66,0.5); }
+  .node-label { position:absolute; top:14px; transform:translateX(-50%); font-size:10px; color:#8b93a7; white-space:nowrap; text-align:center; }
+  .cnt { display:flex; gap:10px; margin-top:12px; }
+  .cnt .c { flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09); border-radius:14px; padding:10px 8px; text-align:center; }
+  .cnt .n { font-size:20px; font-weight:800; }
+  .cnt .l { font-size:10px; color:#8b93a7; margin-top:2px; }
+  .rec { padding:12px 0; border-bottom:1px dashed rgba(255,255,255,0.08); }
+  .rec:last-child { border-bottom:none; padding-bottom:0; }
+  .rec-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  .rec-kind { font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; }
+  .kind-1 { background:rgba(74,222,128,0.12); color:#4ade80; }
+  .kind-2 { background:rgba(245,197,66,0.12); color:#f5c542; }
+  .kind-3 { background:rgba(139,147,167,0.15); color:#a9b1c4; }
+  .rec-date { font-size:11px; color:#8b93a7; }
+  .rec-body { font-size:13px; color:#e8ecf4; line-height:1.5; }
+  .rec-note { font-size:11px; color:#8b93a7; margin-top:3px; line-height:1.5; }
+  .tr { padding:12px 0; border-bottom:1px dashed rgba(255,255,255,0.08); }
+  .tr:last-child { border-bottom:none; padding-bottom:0; }
+  .tr-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  .tr-day { font-size:13px; font-weight:700; color:#a78bfa; }
+  .tr-date { font-size:11px; color:#8b93a7; }
+  .tr-items { font-size:13px; color:#e8ecf4; line-height:1.5; }
+  .tr-note { font-size:11px; color:#8b93a7; margin-top:3px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="era">SELF-RUN ERA · 自立期 DAY 3</div>
+  <h1>餐训账本</h1>
+  <div class="upd">更新 10/31 · v10</div>
+  <div class="stats">
+    <div class="stat"><div class="v">85.15</div><div class="k">kg @33.9%</div></div>
+    <div class="stat"><div class="v">-1.6</div><div class="k">已减 kg</div></div>
+    <div class="stat"><div class="v">11/2</div><div class="k">下一称</div></div>
+    <div class="stat"><div class="v">Day12</div><div class="k">第三周期</div></div>
+  </div>
+  <div class="sec-t">放 纵 餐 · 大成就解锁</div>
+  <div class="glass glow-gold">
+    <span class="tag tag-gold">二级 · 无上限 ≤100 元</span>
+    <div class="cnt">
+      <div class="c"><div class="n">1</div><div class="l">获得（张）</div></div>
+      <div class="c"><div class="n" style="color:#f5c542;">1</div><div class="l">已用（张）</div></div>
+    </div>
+    <div class="desc">关口额度 0 / 3</div>
+    <div class="track">
+      <div class="fill"></div>
+      <div class="node hit" style="left:0%"></div>
+      <div class="node" style="left:33.3%"></div><div class="node-label" style="left:33.3%">81.75<br>-5kg</div>
+      <div class="node" style="left:66.7%"></div><div class="node-label" style="left:66.7%">76.75<br>-10kg</div>
+      <div class="node" style="left:100%"></div><div class="node-label" style="left:100%">71.75<br>-15kg</div>
+    </div>
+    
+  </div>
+  <div class="glass">
+    <span class="tag tag-gold">债务清零 · 特别额度</span>
+    <div class="cnt">
+      <div class="c"><div class="n">1</div><div class="l">获得（10/29）</div></div>
+      <div class="c"><div class="n" style="color:#f5c542;">1</div><div class="l">已用（10/30）</div></div>
+    </div>
+    <div class="desc">¥97.09</div>
+  </div>
+  <div class="sec-t">放 松 餐 · 周期发放</div>
+  <div class="glass">
+    <span class="tag tag-teal">一级 · 每 2 周期 1 次</span>
+    <div class="cnt">
+      <div class="c"><div class="n">1</div><div class="l">获得（张）</div></div>
+      <div class="c"><div class="n" style="color:#4ade80;">1</div><div class="l">已用（张）</div></div>
+    </div>
+    <div class="desc">第 1 张 10/29 已用 · 下一张 ≈11/6</div>
+  </div>
+  <div class="sec-t">记 录 流</div>
+  <div class="glass">
+    <div class="rec">
+      <div class="rec-head"><span class="rec-kind kind-2">放纵餐 · 清债庆祝</span><span class="rec-date">10/30 晚 ✓</span></div>
+      <div class="rec-body">牛乳红茶（大杯五分糖）+ 烤羊肉串×7 + 能量盒（鸡肉卷/脆骨串/翅尖×5/鸡米花/可乐）+ 软糖 82g + 发酵乳 250g + 可乐 330ml + 臭豆腐（小包）</div>
+      <div class="rec-note">¥97.09 · ≈2600 千卡 · 全天 ≈3965 · 盈余 ≈+910 · 真脂肪 +0.12kg · 贡献分 80</div>
+    </div>
+    <div class="rec">
+      <div class="rec-head"><span class="rec-kind kind-1">放松餐 · 前两周期额度</span><span class="rec-date">10/29 ✓</span></div>
+      <div class="rec-body">毛血旺单人份 + 无糖可乐（¥28.9）</div>
+      <div class="rec-note">≈650 千卡 · 当天缺口 795 三绿 · 红汤没喝</div>
+    </div>
+    <div class="rec">
+      <div class="rec-head"><span class="rec-kind kind-3">定版日常</span><span class="rec-date">每天</span></div>
+      <div class="rec-body">早 2 蛋+全麦+奶 · 午食堂判卷 · 晚酸奶+晚碳水轮换池 · 乳清 2 勺</div>
+      <div class="rec-note">蛋白线 ≈100-110g · 只动碳水，其他照旧</div>
+    </div>
+  </div>
+  <div class="sec-t">训 练 日 志 · Day1-12</div>
+  <div class="glass">
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day12 · 腿+肩</span><span class="tr-date">10/31</span></div>
+      <div class="tr-items">待练</div>
+      <div class="tr-note">—</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day11 · 背二头</span><span class="tr-date">10/30 ✓</span></div>
+      <div class="tr-items">硬拉 50×4×7 · 划船 26×4×9 · 21响 7.5kg×2+5kg×2 · 快走 30min 速5坡4</div>
+      <div class="tr-note">次数爬坡第 2 格 · 21响阶梯首用</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day10 · 胸三头</span><span class="tr-date">10/29 ✓</span></div>
+      <div class="tr-items">卧推 35×4×7 · 夹胸 12×4×9 · 下压 26×4×9 · 快走 25min</div>
+      <div class="tr-note">次数爬坡第 1 格三格全升 · 第三称 85.15@33.9%</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day9 · 休</span><span class="tr-date">10/28</span></div>
+      <div class="tr-items">全休</div>
+      <div class="tr-note">—</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day8 · 腿+肩</span><span class="tr-date">10/27 ✓</span></div>
+      <div class="tr-items">深蹲 60×4×6 · 腿屈伸 49×4×8 · 腿弯举 33×4×8 · 内收 12×4×8 · 推肩 10×4×8 · 中束 5×4×8 · 后束 19×4×8</div>
+      <div class="tr-note">7 格全量 45min · 三大日基线齐</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day7 · 背二头</span><span class="tr-date">10/26 ✓</span></div>
+      <div class="tr-items">硬拉 50×4×6 · 划船 26×4×8 · 21响 5kg×4×21 · 快走 25min</div>
+      <div class="tr-note">背日基线（划船 26 为 10/30 修正值）</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day6 · 胸三头</span><span class="tr-date">10/25 ✓</span></div>
+      <div class="tr-items">卧推 35×4×6 · 夹胸 12×4×8 · 下压 26×4×8</div>
+      <div class="tr-note">胸日基线 · 第二称 85.75@34.5%</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day5 · 休</span><span class="tr-date">10/24</span></div>
+      <div class="tr-items">恢复日</div>
+      <div class="tr-note">全天三绿 1210 千卡 · 贡献分 95</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day4 · 休</span><span class="tr-date">10/23</span></div>
+      <div class="tr-items">称重顺延 · 机动日</div>
+      <div class="tr-note">饮食五天全勤收官</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day3 · 腿+肩</span><span class="tr-date">10/22 ✓</span></div>
+      <div class="tr-items">腿日 7 位打卡 · 45 分钟（前束器械推肩 · 内收外展 A 组）</div>
+      <div class="tr-note">坚蛋健身首周</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day2 · 背二头</span><span class="tr-date">10/21 ✓</span></div>
+      <div class="tr-items">背二头完整练（适应期，未记重量）</div>
+      <div class="tr-note">首个 100 分训练贡献分</div>
+    </div>
+    <div class="tr">
+      <div class="tr-head"><span class="tr-day">Day1 · 首夜开机</span><span class="tr-date">10/20 ✓</span></div>
+      <div class="tr-items">力量 + 快走 + 雨夜跑 1.13km 三段闭环</div>
+      <div class="tr-note">健身房首夜 · 8 个月停训后重启</div>
+    </div>
+  </div>
+  <div class="sec-t">制 度 卡</div>
+  <div class="glass">
+    <span class="tag tag-teal">放松餐 · 一级</span>
+    <div class="rule" style="margin-top:6px; padding-top:0; border-top:none;">
+      每 2 周期（8 天）发 1 次 · 晚餐碳水位换别的 · 味道不限 · 吃饱量 · 控制范围内 · 训练日吃 · 吃前报小言审 · 休息日禁用
+    </div>
+  </div>
+  <div class="glass">
+    <span class="tag tag-gold">放纵餐 · 二级</span>
+    <div class="rule" style="margin-top:6px; padding-top:0; border-top:none;">
+      大成就解锁（清债 / -5kg 关口序列）· 无上限 ≤100 元 · 训练日吃 · 随时可吃 · 可与放松餐叠加 · 每关兑 1 次跳关作废 · 全战役最多 3 次 · 只动晚餐碳水其他照旧 · 吃完次日回定版（保底条款：吃了≠破功）
+    </div>
+  </div>
+  <div class="upd" style="margin-top:18px;">小言记账 · 准确记录，不猜不漏</div>
+</div>
+</body>
+</html>
